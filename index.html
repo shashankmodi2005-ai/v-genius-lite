@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>V Genius Lite v2.5 - Web Enterprise Workspace</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #0d1117;
+            color: #c9d1d9;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar Desktop */
+        aside {
+            width: 260px;
+            background-color: #161b22;
+            border-right: 1px solid #30363d;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .brand {
+            font-size: 18px;
+            font-weight: 800;
+            color: #58a6ff;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-link {
+            background: transparent;
+            border: none;
+            color: #8b949e;
+            text-align: left;
+            padding: 12px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 6px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background-color: #21262d;
+            color: #58a6ff;
+        }
+
+        /* Main Workspace */
+        .main-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: #0d1117;
+            overflow: hidden;
+        }
+
+        header {
+            background-color: #161b22;
+            border-bottom: 1px solid #30363d;
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: white;
+        }
+
+        /* API Key Banner */
+        .api-banner {
+            background: #1f242c;
+            border-bottom: 1px solid #30363d;
+            padding: 10px 25px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            font-size: 12px;
+        }
+
+        .api-banner input {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 6px 12px;
+            color: white;
+            flex: 1;
+            max-width: 350px;
+        }
+
+        .api-banner button {
+            background: #238636;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Content Area */
+        content-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 25px;
+            display: none;
+        }
+
+        content-area.active {
+            display: block;
+        }
+
+        /* Cards & Grids */
+        .card {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .btn-primary {
+            background-color: #238636;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-primary:hover {
+            background-color: #2ea043;
+        }
+
+        /* Chat Styles */
+        .chat-box {
+            height: calc(100vh - 270px);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding-right: 10px;
+            margin-bottom: 15px;
+        }
+
+        .msg {
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            line-height: 1.5;
+            max-width: 80%;
+        }
+
+        .msg.user {
+            background: #1f242c;
+            color: #58a6ff;
+            align-self: flex-end;
+            border: 1px solid #30363d;
+        }
+
+        .msg.bot {
+            background: #161b22;
+            color: #c9d1d9;
+            align-self: flex-start;
+            border: 1px solid #30363d;
+        }
+
+        .chat-input-area {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input-area input {
+            flex: 1;
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 12px;
+            color: white;
+            font-size: 13px;
+        }
+
+        /* Calculator Styles */
+        .calc-display {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 16px;
+            text-align: right;
+            font-size: 26px;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .calc-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            max-width: 400px;
+        }
+
+        .calc-btn {
+            background: #161b22;
+            border: 1px solid #30363d;
+            color: white;
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .calc-btn:hover { background: #21262d; }
+        .calc-btn.op { color: #58a6ff; background: #1f242c; }
+        .calc-btn.equal { background: #238636; grid-column: span 2; }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside>
+        <div class="brand">⚡ V GENIUS LITE</div>
+        <button class="nav-link active" onclick="switchTab('home', event)">🏠 Workspace Home</button>
+        <button class="nav-link" onclick="switchTab('chat', event)">💬 Pro AI Chat Studio</button>
+        <button class="nav-link" onclick="switchTab('notes', event)">📄 Notes & PDF Studio</button>
+        <button class="nav-link" onclick="switchTab('calc', event)">🧮 Scientific Calculator</button>
+        <button class="nav-link" onclick="switchTab('team', event)">👥 Executive Team</button>
+    </aside>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <header>
+            <div class="header-title" id="pageTitle">Workspace Control</div>
+            <div style="font-size: 12px; color: #2ea043;">● System Live & Operational</div>
+        </header>
+
+        <!-- API Key Quick Setup Bar -->
+        <div class="api-banner">
+            <span>🔑 Gemini API Key:</span>
+            <input type="password" id="apiKeyInput" placeholder="Paste your Google AI Studio API key here...">
+            <button onclick="saveApiKey()">Save Key</button>
+        </div>
+
+        <!-- 1. Home Tab -->
+        <content-area id="home" class="active">
+            <div class="card" style="background: linear-gradient(135deg, #161b22 0%, #1f242c 100%);">
+                <h2 style="color: #58a6ff; margin-bottom: 8px;">V GENIUS LITE v2.5 PRO WORKSPACE</h2>
+                <p style="color: #8b949e; font-size: 13px;">The ultimate enterprise student productivity suite. Powered by Gemini AI & local storage.</p>
+            </div>
+            <div class="grid-2">
+                <div class="card">
+                    <h3 style="color: #58a6ff; margin-bottom: 10px;">💬 Pro AI Chat Studio</h3>
+                    <p style="color: #8b949e; font-size: 12px; margin-bottom: 15px;">Solve complex academic doubts instantly with Google Gemini AI.</p>
+                    <button class="btn-primary" onclick="switchTab('chat', null)">Launch AI Chat ➔</button>
+                </div>
+                <div class="card">
+                    <h3 style="color: #58a6ff; margin-bottom: 10px;">📄 Notes & PDF Studio</h3>
+                    <p style="color: #8b949e; font-size: 12px; margin-bottom: 15px;">Create, manage, and store study notes securely in browser storage.</p>
+                    <button class="btn-primary" onclick="switchTab('notes', null)">Launch Notes ➔</button>
+                </div>
+            </div>
+        </content-area>
+
+        <!-- 2. AI Chat Tab -->
+        <content-area id="chat">
+            <div class="chat-box" id="chatBox">
+                <div class="msg bot"><strong>Gemini AI:</strong> Hello! Enter your Gemini API key above and ask me any academic question.</div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" id="chatInput" placeholder="Ask your academic doubt here..." onkeydown="if(event.key === 'Enter') sendAIQuery()">
+                <button class="btn-primary" onclick="sendAIQuery()">Send ➔</button>
+            </div>
+        </content-area>
+
+        <!-- 3. Notes Tab -->
+        <content-area id="notes">
+            <div class="card">
+                <h3 style="color: #58a6ff; margin-bottom: 15px;">📝 Quick Notes Manager</h3>
+                <input type="text" id="noteTitle" placeholder="Note Title..." style="width:100%; background:#0d1117; border:1px solid #30363d; padding:10px; color:white; border-radius:8px; margin-bottom:10px;">
+                <textarea id="noteBody" rows="4" placeholder="Write your notes here..." style="width:100%; background:#0d1117; border:1px solid #30363d; padding:10px; color:white; border-radius:8px; margin-bottom:10px;"></textarea>
+                <button class="btn-primary" onclick="saveNote()">Save Note</button>
+            </div>
+            <div id="notesList"></div>
+        </content-area>
+
+        <!-- 4. Calculator Tab -->
+        <content-area id="calc">
+            <div class="calc-display" id="calcDisplay">0</div>
+            <div class="calc-grid">
+                <button class="calc-btn" onclick="clearCalc()" style="background:#8b0000;">C</button>
+                <button class="calc-btn op" onclick="pressCalc('(')">(</button>
+                <button class="calc-btn op" onclick="pressCalc(')')">)</button>
+                <button class="calc-btn op" onclick="pressCalc('/')">/</button>
+                <button class="calc-btn" onclick="pressCalc('7')">7</button>
+                <button class="calc-btn" onclick="pressCalc('8')">8</button>
+                <button class="calc-btn" onclick="pressCalc('9')">9</button>
+                <button class="calc-btn op" onclick="pressCalc('*')">*</button>
+                <button class="calc-btn" onclick="pressCalc('4')">4</button>
+                <button class="calc-btn" onclick="pressCalc('5')">5</button>
+                <button class="calc-btn" onclick="pressCalc('6')">6</button>
+                <button class="calc-btn op" onclick="pressCalc('-')">-</button>
+                <button class="calc-btn" onclick="pressCalc('1')">1</button>
+                <button class="calc-btn" onclick="pressCalc('2')">2</button>
+                <button class="calc-btn" onclick="pressCalc('3')">3</button>
+                <button class="calc-btn op" onclick="pressCalc('+')">+</button>
+                <button class="calc-btn" onclick="pressCalc('0')" style="grid-column: span 2;">0</button>
+                <button class="calc-btn" onclick="pressCalc('.')">.</button>
+                <button class="calc-btn equal" onclick="evalCalc()">=</button>
+            </div>
+        </content-area>
+
+        <!-- 5. Team Tab -->
+        <content-area id="team">
+            <div class="card"><h3 style="color: #58a6ff;">👑 Surya Pratap Singh</h3><p style="color: #8b949e; font-size:12px;">Team Lead & Presentation Specialist</p></div>
+            <div class="card"><h3 style="color: #58a6ff;">💻 Shashank Modi</h3><p style="color: #8b949e; font-size:12px;">Core Backend & Systems Developer</p></div>
+            <div class="card"><h3 style="color: #58a6ff;">⚙️ Vishal Kumar Gupta</h3><p style="color: #8b949e; font-size:12px;">Software & Logic Developer</p></div>
+            <div class="card"><h3 style="color: #58a6ff;">🎨 Vishal Kumar</h3><p style="color: #8b949e; font-size:12px;">Lead UI/UX Designer & Frontend Developer</p></div>
+        </content-area>
+    </div>
+
+    <script>
+        // Tab Switching
+        function switchTab(tabId, event) {
+            document.querySelectorAll('content-area').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            if(event) event.currentTarget.classList.add('active');
+            
+            const titles = {home: "Workspace Control", chat: "Pro AI Chat Studio", notes: "Notes & PDF Studio", calc: "Advanced Scientific Calculator", team: "Executive Team"};
+            document.getElementById("pageTitle").innerText = titles[tabId];
+        }
+
+        // API Key Management
+        function saveApiKey() {
+            const key = document.getElementById('apiKeyInput').value.trim();
+            if(key) {
+                localStorage.setItem('gemini_api_key', key);
+                alert("API Key saved successfully in browser storage!");
+            }
+        }
+        window.onload = () => {
+            const savedKey = localStorage.getItem('gemini_api_key');
+            if(savedKey) document.getElementById('apiKeyInput').value = savedKey;
+            renderNotes();
+        }
+
+        // Real Gemini AI Integration via REST API
+        async function sendAIQuery() {
+            const input = document.getElementById('chatInput');
+            const query = input.value.trim();
+            if(!query) return;
+
+            const apiKey = localStorage.getItem('gemini_api_key') || document.getElementById('apiKeyInput').value.trim();
+            const chatBox = document.getElementById('chatBox');
+
+            // Append User Message
+            chatBox.innerHTML += `<div class="msg user"><strong>You:</strong> ${query}</div>`;
+            input.value = '';
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // Append Thinking state
+            const thinkingId = 'think-' + Date.now();
+            chatBox.innerHTML += `<div class="msg bot" id="${thinkingId}"><strong>Gemini AI:</strong> Thinking...</div>`;
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            if(!apiKey) {
+                document.getElementById(thinkingId).innerHTML = `<strong>Gemini AI:</strong> Error: Please enter and save your Gemini API Key in the top bar first!`;
+                return;
+            }
+
+            try {
+                // Using Gemini 1.5 Flash REST endpoint
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: query }] }]
+                    })
+                });
+
+                const data = await response.json();
+                if(data.candidates && data.candidates[0].content.parts[0].text) {
+                    const reply = data.candidates[0].content.parts[0].text;
+                    document.getElementById(thinkingId).innerHTML = `<strong>Gemini AI:</strong> ${reply.replace(/\n/g, '<br>')}`;
+                } else {
+                    throw new Error(data.error?.message || "Invalid API response");
+                }
+            } catch (err) {
+                document.getElementById(thinkingId).innerHTML = `<strong>Gemini AI:</strong> API Connection Error: ${err.message}. Please check your API key.`;
+            }
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // Calculator Logic
+        let calcVal = "0";
+        function pressCalc(val) {
+            if (calcVal === "0") calcVal = "";
+            calcVal += val;
+            document.getElementById('calcDisplay').innerText = calcVal;
+        }
+        function clearCalc() {
+            calcVal = "0";
+            document.getElementById('calcDisplay').innerText = calcVal;
+        }
+        function evalCalc() {
+            try {
+                calcVal = eval(calcVal).toString();
+                document.getElementById('calcDisplay').innerText = calcVal;
+            } catch {
+                document.getElementById('calcDisplay').innerText = "Error";
+                calcVal = "0";
+            }
+        }
+
+        // Notes Logic
+        function saveNote() {
+            const title = document.getElementById('noteTitle').value;
+            const body = document.getElementById('noteBody').value;
+            if(!title) return;
+
+            const notes = JSON.parse(localStorage.getItem('vg_web_notes') || '[]');
+            notes.push({ title, body, date: new Date().toLocaleDateString() });
+            localStorage.setItem('vg_web_notes', JSON.stringify(notes));
+
+            document.getElementById('noteTitle').value = '';
+            document.getElementById('noteBody').value = '';
+            renderNotes();
+        }
+
+        function renderNotes() {
+            const notes = JSON.parse(localStorage.getItem('vg_web_notes') || '[]');
+            const container = document.getElementById('notesList');
+            container.innerHTML = notes.map(n => `
+                <div class="card" style="margin-top: 15px;">
+                    <h4 style="color:#58a6ff;">${n.title}</h4>
+                    <p style="color:#c9d1d9; font-size:13px; margin-top:5px;">${n.body}</p>
+                    <span style="font-size:10px; color:#8b949e; display:block; margin-top:8px;">Saved on: ${n.date}</span>
+                </div>
+            `).join('');
+        }
+    </script>
+</body>
+</html>
